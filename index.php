@@ -406,7 +406,7 @@ require_once __DIR__ . '/includes/home_forms.php';
                             </div>
                             <div>
                                 <h4 class="font-bold text-primary mb-1">Email Us</h4>
-                                <p class="text-gray-600">contact@kenshoproject.com</p>
+                                <p class="text-gray-600"><a href="mailto:contact@kenshoproject.com" class="text-secondary hover:text-primary hover:underline transition duration-200">contact@kenshoproject.com</a></p>
                             </div>
                         </div>
                         
@@ -416,7 +416,7 @@ require_once __DIR__ . '/includes/home_forms.php';
                             </div>
                             <div>
                                 <h4 class="font-bold text-primary mb-1">Call Us</h4>
-                                <p class="text-gray-600">+91 90805 65434</p>
+                                <p class="text-gray-600"><a href="tel:+919080565434" class="text-secondary hover:text-primary hover:underline transition duration-200">+91 90805 65434</a></p>
                             </div>
                         </div>
                     </div>
