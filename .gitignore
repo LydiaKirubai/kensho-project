@@ -1,7 +1,6 @@
-# Secrets — copy .env.example to .env and fill in locally / on the server
+# Secrets (create `.env` locally / on server; never commit)
 .env
 .env.*
-!.env.example
 
 # OS / editor
 .DS_Store
