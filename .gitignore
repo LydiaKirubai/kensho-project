@@ -1,0 +1,25 @@
+# Secrets — copy .env.example to .env and fill in locally / on the server
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# Logs & temp
+*.log
+/tmp/
+/cache/
+
+# Composer (if added later)
+/vendor/
+
+# Node (if added later)
+node_modules/

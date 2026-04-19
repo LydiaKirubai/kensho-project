@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# 1. Redirect /index or /index.php to /
+RewriteCond %{THE_REQUEST} /index(\.php)? [NC]
+RewriteRule ^index(\.php)?$ / [R=301,L]
+
+# 2. Rewrite /about to /about.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.php [L]

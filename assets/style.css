@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .bg-primary {
+            background-color: #1B3592;
+        }
+
+        .text-primary {
+            color: #1B3592;
+        }
+
+        .bg-secondary {
+            background-color: #0F7EC3;
+        }
+
+        .text-secondary {
+            color: #0F7EC3;
+        }
+
+        .bg-accent {
+            background-color: #678C25;
+        }
+
+        .text-accent {
+            color: #678C25;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #1B3592 0%, #0F7EC3 50%, #678C25 100%);
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #678C25;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+.logo-container {
+  width: 80px;     /* was 48px */
+  height: 112px;    /* was 72px */
+  position: relative;
+}
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+@media (min-width: 768px) {
+  .logo-container {
+    width: 100px;    /* was 64px */
+    height: 140px;  /* was 96px */
+  }
+}
+@media (max-width: 639px) {
+  html {
+    font-size: 13px; 
+  }
+}
+
+/*Large Desktops*/
+@media (min-width: 1024px) {
+  .logo-container {
+    width: 96px;
+    height: 140px;
+  }
+}
+
+/*Typewriter animation*/
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(20, end);
+}
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/*Cursor Animation*/
+
+.stardust {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: #678C25; /* earthy green base */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: stardust-fade 1s ease-out forwards;
+  box-shadow:
+    0 0 6px #A4C639,
+    0 0 10px #678C25,
+    0 0 14px #556B2F;
+}
+
+
+@keyframes stardust-fade {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10px, -20px) scale(0.4);
+  }
+}
+
