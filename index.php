@@ -226,7 +226,7 @@ require_once __DIR__ . '/includes/home_forms.php';
                 
                 <!-- Program 3 -->
                 <div onclick="window.open('https://kensho-project.setmore.com/#our-team', '_blank')" class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale cursor-pointer">
-                    <img src="assets/img/couple-therapy.png" alt="Couples Counseling" class="w-full h-56 object-contain" />
+                    <img src="/assets/img/couple-therapy.png" alt="Couples Counseling" class="w-full h-56 object-contain" onerror="this.onerror=null;this.src='/assets/img/couple-therapy-2.png'" />
                     <div class="p-6">
                         <div class="flex items-center mb-4">
                             <div class="bg-primary rounded-full p-3">

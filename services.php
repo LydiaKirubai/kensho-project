@@ -104,7 +104,7 @@
         <h2 class="text-2xl font-semibold text-accent">Couple Counseling</h2>
         
         <!-- Image after the title -->
-  <img src="assets/img/couple-therapy-2.png" alt="Couple Therapy" class="w-full max-h-64 object-contain rounded-lg my-4" />
+  <img src="/assets/img/couple-therapy-2.png" alt="Couple Therapy" class="w-full max-h-64 object-contain rounded-lg my-4" onerror="this.onerror=null;this.src='/assets/img/couple-therapy.png'" />
 
         <p>Heal together. Understand each other. Grow as a team. For couples navigating emotional disconnection, communication breakdown, trauma histories, or transitions — our sessions help you build safety, clarity, and intimacy without blame.</p>
         <p class="mt-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-800 italic rounded-md shadow-sm">

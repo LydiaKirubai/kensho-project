@@ -100,7 +100,7 @@
 
       <!-- Blog Card 3 -->
       <a href="blog1.php" class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105 cursor-pointer">
-        <img src="assets/img/couple-therapy.png" alt="Blog 3" class="w-full h-48 object-contain">
+        <img src="/assets/img/couple-therapy.png" alt="Blog 3" class="w-full h-48 object-contain" onerror="this.onerror=null;this.src='/assets/img/couple-therapy-2.png'">
         <div class="p-6 h-52 flex flex-col justify-between">
           <h3 class="text-xl font-bold text-primary mb-2">Safe Relationships After Trauma</h3>
           <p class="text-gray-600 text-sm mb-4">Navigating connection after trauma — how to build safety, trust, and boundaries in relationships.</p>
