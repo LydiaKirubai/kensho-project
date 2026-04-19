@@ -424,20 +424,11 @@ require_once __DIR__ . '/includes/home_forms.php';
                     <div class="mt-8">
                         <h4 class="font-bold text-primary mb-4">Follow Us</h4>
                         <div class="flex space-x-4">
-                            <a href="#" class="bg-white p-2 rounded-full shadow hover-scale">
-                                <i class="fab fa-facebook-f text-primary"></i>
-                            </a>
-                            <a href="#" class="bg-white p-2 rounded-full shadow hover-scale">
-                                <i class="fab fa-twitter text-primary"></i>
-                            </a>
-                            <a href="#" class="bg-white p-2 rounded-full shadow hover-scale">
+                            <a href="https://www.instagram.com/kensho.project?igsh=bnphNHB6N3hmdWwy" target="_blank" rel="noopener noreferrer" class="bg-white p-2 rounded-full shadow hover-scale" aria-label="Instagram">
                                 <i class="fab fa-instagram text-primary"></i>
                             </a>
-                            <a href="#" class="bg-white p-2 rounded-full shadow hover-scale">
+                            <a href="https://www.linkedin.com/company/kensho-project/" target="_blank" rel="noopener noreferrer" class="bg-white p-2 rounded-full shadow hover-scale" aria-label="LinkedIn">
                                 <i class="fab fa-linkedin-in text-primary"></i>
-                            </a>
-                            <a href="#" class="bg-white p-2 rounded-full shadow hover-scale">
-                                <i class="fab fa-youtube text-primary"></i>
                             </a>
                         </div>
                     </div>
