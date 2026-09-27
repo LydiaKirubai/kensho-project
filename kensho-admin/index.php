@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid #ccc;
             border-radius: 6px;
             outline: none;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         input:focus {
@@ -142,6 +142,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #c0392b;
             margin-bottom: 15px;
             font-size: 14px;
+        }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 12px;
+            }
+
+            .login-wrapper {
+                padding: 30px 20px;
+            }
+
+            .logo {
+                max-width: 80px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
         }
     </style>
 </head>

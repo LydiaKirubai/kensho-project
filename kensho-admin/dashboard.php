@@ -269,9 +269,13 @@ function column_label(string $col): string
         }
 
         td.message {
-            min-width: 240px;
+            min-width: 220px;
             max-width: 420px;
-            word-wrap: break-word;
+        }
+
+        td.email {
+            min-width: 170px;
+            overflow-wrap: anywhere;
         }
 
         td.empty {
@@ -359,7 +363,17 @@ function column_label(string $col): string
             padding: 0 4px;
         }
 
-        @media (max-width: 768px) {
+        td {
+            overflow-wrap: break-word;
+        }
+
+        @media (max-width: 1340px) {
+            .dashboard {
+                margin: 24px 20px;
+            }
+        }
+
+        @media (max-width: 900px) {
             .dashboard {
                 margin: 15px;
                 padding: 15px;
@@ -383,9 +397,11 @@ function column_label(string $col): string
             td {
                 border-bottom: none;
                 padding: 6px 4px;
+                overflow-wrap: anywhere;
             }
 
             td.message {
+                min-width: 0;
                 max-width: none;
             }
 
@@ -395,6 +411,59 @@ function column_label(string $col): string
                 display: block;
                 color: var(--accent);
                 font-size: 12px;
+            }
+
+            .pagination {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pages {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .header {
+                padding: 14px 15px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .header a {
+                padding: 7px 12px;
+            }
+
+            .dashboard {
+                margin: 10px;
+                padding: 12px;
+                border-radius: 10px;
+            }
+
+            .dashboard h2 {
+                font-size: 18px;
+            }
+
+            .summary {
+                gap: 8px;
+            }
+
+            .summary a {
+                padding: 5px 10px;
+                font-size: 13px;
+            }
+
+            .pages {
+                gap: 4px;
+            }
+
+            .pages a,
+            .pages span {
+                min-width: 32px;
+                height: 32px;
+                padding: 0 8px;
             }
         }
     </style>
@@ -455,7 +524,7 @@ function column_label(string $col): string
                                 <?php if ($value === null || $value === ''): ?>
                                     <td data-label="<?= $label ?>" class="empty">&mdash;</td>
                                 <?php else: ?>
-                                    <td data-label="<?= $label ?>"<?= $col === 'message' ? ' class="message"' : '' ?>><?= nl2br(htmlspecialchars((string)$value)) ?></td>
+                                    <td data-label="<?= $label ?>"<?= in_array($col, ['message', 'email'], true) ? ' class="' . $col . '"' : '' ?>><?= nl2br(htmlspecialchars((string)$value)) ?></td>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                             <td data-label="Created At"><?= $r['time'] ? date('d/m/y', $r['time']) : '&mdash;' ?></td>
