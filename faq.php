@@ -29,16 +29,6 @@
 
     <!-- Navigation -->
     <?php include "includes/navbar.php";?>
-    
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobile-menu" class="md:hidden hidden bg-white px-6 pt-2 pb-4 shadow-md">
-        <a href="/" class="block text-primary font-medium py-2">Home</a>
-        <a href="#about" class="block text-primary font-medium py-2">About</a>
-        <a href="/services" class="block text-primary font-medium py-2">Services</a>
-        <a href="#impact" class="block text-primary font-medium py-2">Impact</a>
-        <a href="#team" class="block text-primary font-medium py-2">Team</a>
-        <a href="#contact" class="block bg-accent text-white font-medium px-4 py-2 mt-2 rounded-full text-center w-full">Contact Us</a>
-    </div>
 
 <!-- FAQ Section -->
 <section class="max-w-4xl mx-auto px-6 py-16">
@@ -187,7 +177,7 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="script.js"></script>
+    <script src="assets/script.js"></script>
     <script>
   function toggleFaq(index) {
     const allAnswers = document.querySelectorAll('#accordion > div > div:nth-child(2)');

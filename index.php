@@ -562,11 +562,16 @@ menuBtn.addEventListener('click', () => {
     document.body.classList.toggle('overflow-hidden');
 });
 
-overlay.addEventListener('click', () => {
+function closeMobileMenu() {
     mobileMenu.classList.add('hidden');
     overlay.classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
-});
+}
+
+overlay.addEventListener('click', closeMobileMenu);
+mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileMenu));
+// Pages restored from the back/forward cache keep the menu's open state.
+window.addEventListener('pageshow', closeMobileMenu);
 
 </script>
 

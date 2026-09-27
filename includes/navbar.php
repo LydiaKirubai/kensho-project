@@ -50,3 +50,28 @@
 
 <!-- Overlay -->
 <div id="menu-overlay" class="fixed top-[96px] left-0 right-0 bottom-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+<script>
+(function () {
+    const menuBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('menu-overlay');
+    if (!menuBtn || !mobileMenu || !overlay) return;
+
+    function closeMenu() {
+        mobileMenu.classList.add('hidden');
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        overlay.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
+    });
+    overlay.addEventListener('click', closeMenu);
+    mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+    // Pages restored from the back/forward cache keep the menu's open state.
+    window.addEventListener('pageshow', closeMenu);
+})();
+</script>

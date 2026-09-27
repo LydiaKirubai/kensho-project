@@ -1,37 +1,23 @@
 // Scroll to top button functionality
+// The mobile menu is handled in includes/navbar.php.
 const scrollToTopBtn = document.getElementById('scrollToTop');
 
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        scrollToTopBtn.classList.remove('hidden');
-    } else {
-        scrollToTopBtn.classList.add('hidden');
-    }
-});
-
-scrollToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+if (scrollToTopBtn) {
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.remove('hidden');
+        } else {
+            scrollToTopBtn.classList.add('hidden');
+        }
     });
-});
 
-// Mobile Menu Button & Overlay
-const menuBtn = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
-const overlay = document.getElementById('menu-overlay');
-
-menuBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-    overlay.classList.toggle('hidden');
-    document.body.classList.toggle('overflow-hidden');
-});
-
-overlay.addEventListener('click', () => {
-    mobileMenu.classList.add('hidden');
-    overlay.classList.add('hidden');
-    document.body.classList.remove('overflow-hidden');
-});
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
 
 // Cursor Animation
 let allowStardust = true;

@@ -26,15 +26,6 @@
     <?php include "includes/navbar.php";?>
     
     <!-- Mobile Menu Dropdown -->
-    <div id="mobile-menu" class="md:hidden hidden bg-white px-6 pt-2 pb-4 shadow-md">
-        <a href="/" class="block text-primary font-medium py-2">Home</a>
-        <a href="#about" class="block text-primary font-medium py-2">About</a>
-        <a href="#programs" class="block text-primary font-medium py-2">Programs</a>
-        <a href="#impact" class="block text-primary font-medium py-2">Impact</a>
-        <a href="#team" class="block text-primary font-medium py-2">Team</a>
-        <a href="#contact" class="block bg-accent text-white font-medium px-4 py-2 mt-2 rounded-full text-center w-full">Contact Us</a>
-    </div>
-    
 <!-- Banner Image Section -->
 <section class="w-full aspect-[16/9] sm:aspect-[16/6] bg-center bg-no-repeat bg-cover relative" style="background-image: url('assets/img/kensho-banner.png');">
   <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
