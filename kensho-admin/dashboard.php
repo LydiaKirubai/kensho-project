@@ -12,12 +12,22 @@ $badgeClass = [
     'Course Form'     => 'badge-course',
     'Free Guide Form' => 'badge-guide',
 ];
+$filterSlugs = [
+    'contact' => 'Contact Form',
+    'course'  => 'Course Form',
+    'guide'   => 'Free Guide Form',
+];
+$filter = $_GET['form'] ?? '';
+if (!isset($filterSlugs[$filter])) {
+    $filter = '';
+}
 $dateColumns = ['created_at', 'submitted_at', 'subscribed_at', 'date', 'timestamp'];
 $hiddenColumns = ['id'];
 
 $conn = db_connect();
 $rows = [];
 $columns = [];
+$sourceColumns = [];
 $counts = [];
 $loadErrors = [];
 
@@ -42,9 +52,7 @@ if ($conn) {
             foreach ($hiddenColumns as $col) {
                 unset($row[$col]);
             }
-            foreach (array_keys($row) as $col) {
-                $columns[$col] = true;
-            }
+            $sourceColumns[$label] = $sourceColumns[$label] ?? array_keys($row);
             $rows[] = [
                 'source' => $label,
                 'fields' => $row,
@@ -59,7 +67,37 @@ if ($conn) {
     });
 }
 
+$allCount = count($rows);
+if ($filter !== '') {
+    $rows = array_values(array_filter($rows, function ($r) use ($filter, $filterSlugs) {
+        return $r['source'] === $filterSlugs[$filter];
+    }));
+}
+
+$visibleSources = [];
+foreach ($rows as $r) {
+    $visibleSources[$r['source']] = true;
+}
+foreach ($sources as $label) {
+    if (isset($visibleSources[$label], $sourceColumns[$label])) {
+        foreach ($sourceColumns[$label] as $col) {
+            $columns[$col] = true;
+        }
+    }
+}
 $columns = array_keys($columns);
+
+function dashboard_url(string $filter, int $page = 1): string
+{
+    $params = [];
+    if ($filter !== '') {
+        $params['form'] = $filter;
+    }
+    if ($page > 1) {
+        $params['page'] = $page;
+    }
+    return 'dashboard.php' . ($params ? '?' . http_build_query($params) : '');
+}
 
 $perPage = 10;
 $totalRows = count($rows);
@@ -175,10 +213,23 @@ function column_label(string $col): string
             font-size: 14px;
         }
 
-        .summary span {
+        .summary a {
             background: #eef4ff;
-            padding: 6px 12px;
+            color: var(--primary);
+            padding: 6px 14px;
             border-radius: 20px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .summary a:hover {
+            border-color: var(--secondary);
+        }
+
+        .summary a.active {
+            background: var(--primary);
+            color: #fff;
         }
 
         .notice {
@@ -365,9 +416,10 @@ function column_label(string $col): string
         <div class="notice">Could not connect to the database. Check the settings in <code>.env</code>.</div>
     <?php else: ?>
         <div class="summary">
-            <span><strong><?= $totalRows ?></strong> total</span>
-            <?php foreach ($counts as $label => $count): ?>
-                <span><?= htmlspecialchars($label) ?>: <strong><?= $count ?></strong></span>
+            <a href="<?= dashboard_url('') ?>" class="<?= $filter === '' ? 'active' : '' ?>">All: <strong><?= $allCount ?></strong></a>
+            <?php foreach ($filterSlugs as $slug => $label): ?>
+                <?php if (!isset($counts[$label])) continue; ?>
+                <a href="<?= dashboard_url($slug) ?>" class="<?= $filter === $slug ? 'active' : '' ?>"><?= htmlspecialchars($label) ?>: <strong><?= $counts[$label] ?></strong></a>
             <?php endforeach; ?>
         </div>
 
@@ -421,7 +473,7 @@ function column_label(string $col): string
                 <?php if ($totalPages > 1): ?>
                     <nav class="pages" aria-label="Pagination">
                         <?php if ($page > 1): ?>
-                            <a href="?page=<?= $page - 1 ?>" aria-label="Previous page"><i class="fas fa-chevron-left"></i></a>
+                            <a href="<?= dashboard_url($filter, $page - 1) ?>" aria-label="Previous page"><i class="fas fa-chevron-left"></i></a>
                         <?php else: ?>
                             <span class="disabled"><i class="fas fa-chevron-left"></i></span>
                         <?php endif; ?>
@@ -434,13 +486,13 @@ function column_label(string $col): string
                             <?php if ($p === $page): ?>
                                 <span class="current" aria-current="page"><?= $p ?></span>
                             <?php else: ?>
-                                <a href="?page=<?= $p ?>"><?= $p ?></a>
+                                <a href="<?= dashboard_url($filter, $p) ?>"><?= $p ?></a>
                             <?php endif; ?>
                             <?php $prev = $p; ?>
                         <?php endforeach; ?>
 
                         <?php if ($page < $totalPages): ?>
-                            <a href="?page=<?= $page + 1 ?>" aria-label="Next page"><i class="fas fa-chevron-right"></i></a>
+                            <a href="<?= dashboard_url($filter, $page + 1) ?>" aria-label="Next page"><i class="fas fa-chevron-right"></i></a>
                         <?php else: ?>
                             <span class="disabled"><i class="fas fa-chevron-right"></i></span>
                         <?php endif; ?>
