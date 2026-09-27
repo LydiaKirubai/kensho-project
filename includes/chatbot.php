@@ -217,12 +217,6 @@
   letter-spacing: 0.2px;
 }
 
-.kc-title span {
-  display: block;
-  font-size: 12.5px;
-  opacity: 0.85;
-}
-
 .kc-close {
   width: 34px;
   height: 34px;
@@ -520,7 +514,6 @@
       <div class="kc-avatar"><img src="/assets/img/logo.png" alt=""></div>
       <div class="kc-title">
         <strong>Kensho Companion</strong>
-        <span>A gentle first step towards support</span>
       </div>
       <button class="kc-close" type="button" aria-label="Close chat">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -569,6 +562,7 @@
   const lead = { name: '', email: '', concern: '', duration: '', therapy: '' };
   let started = false;
   let leadSent = false;
+  let savedLead = null;
   let onSubmit = null;
 
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -638,14 +632,27 @@
     });
   }
 
-  function sendLead() {
-    if (leadSent || !lead.email) return;
-    leadSent = true;
-    fetch('/chatbot_lead.php', {
+  function postLead(payload) {
+    return fetch('/chatbot_lead.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.assign({ source: 'Website Chatbot', page: location.pathname }, lead))
-    }).catch(() => {});
+      body: JSON.stringify(Object.assign({ source: 'Website Chatbot', page: location.pathname }, payload))
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null);
+  }
+
+  // Saves name + email as soon as they're given, so partial chats still reach the dashboard.
+  function saveContact() {
+    savedLead = postLead({ action: 'start', name: lead.name, email: lead.email });
+  }
+
+  async function sendLead() {
+    if (leadSent || !lead.email) return;
+    leadSent = true;
+    const saved = savedLead ? await savedLead : null;
+    const ids = saved && saved.id ? { id: saved.id, token: saved.token } : {};
+    postLead(Object.assign({ action: 'complete' }, lead, ids));
   }
 
   function icon(path) {
@@ -711,6 +718,7 @@
     input.removeAttribute('aria-invalid');
     hideInput();
     addMessage(email, 'user');
+    saveContact();
     await askQuestions();
     return true;
   }
@@ -743,6 +751,7 @@
     body.innerHTML = '';
     Object.keys(lead).forEach((k) => { lead[k] = ''; });
     leadSent = false;
+    savedLead = null;
     hideInput();
     runConversation();
   }

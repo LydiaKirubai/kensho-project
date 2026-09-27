@@ -6,23 +6,26 @@ $sources = [
     'contact_submissions' => 'Contact Form',
     'course_email'        => 'Course Form',
     'email_list'          => 'Free Guide Form',
+    'chatbot_leads'       => 'Chatbot',
 ];
 $badgeClass = [
     'Contact Form'    => 'badge-contact',
     'Course Form'     => 'badge-course',
     'Free Guide Form' => 'badge-guide',
+    'Chatbot'         => 'badge-chatbot',
 ];
 $filterSlugs = [
     'contact' => 'Contact Form',
     'course'  => 'Course Form',
     'guide'   => 'Free Guide Form',
+    'chatbot' => 'Chatbot',
 ];
 $filter = $_GET['form'] ?? '';
 if (!isset($filterSlugs[$filter])) {
     $filter = '';
 }
 $dateColumns = ['created_at', 'submitted_at', 'subscribed_at', 'date', 'timestamp'];
-$hiddenColumns = ['id'];
+$hiddenColumns = ['id', 'token'];
 
 $conn = db_connect();
 $rows = [];
@@ -35,7 +38,12 @@ if ($conn) {
     foreach ($sources as $table => $label) {
         $result = $conn->query('SELECT * FROM `' . $table . '`');
         if (!$result) {
-            $loadErrors[] = $label;
+            // 1146 = table doesn't exist yet (e.g. chatbot_leads before the first chat)
+            if ($conn->errno === 1146) {
+                $counts[$label] = 0;
+            } else {
+                $loadErrors[] = $label;
+            }
             continue;
         }
         $counts[$label] = $result->num_rows;
@@ -304,6 +312,11 @@ function column_label(string $col): string
         .badge-guide {
             background: #e0f2fb;
             color: #0b6394;
+        }
+
+        .badge-chatbot {
+            background: #f1e8fb;
+            color: #6b3fa0;
         }
 
         .pagination {
