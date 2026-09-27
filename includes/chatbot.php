@@ -683,7 +683,7 @@
 
   async function runConversation() {
     await botSay("Hello, and welcome to Kensho Project. 🌿", 700);
-    await botSay("This is a calm, private space. I'll ask a few gentle questions so we can point you to the right support.");
+    await botSay("This is a safe and private space. I'll ask you a few quick questions to help guide you to the right support.");
     await botSay('May I know your first name?');
     askText('Your first name', 'text', handleName);
   }
