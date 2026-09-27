@@ -404,7 +404,11 @@
 .kc-footer {
   border-top: 1px solid #eef0f5;
   background: #fff;
-  padding: 10px 12px 8px;
+  padding: 10px 12px;
+}
+
+.kc-footer[hidden] {
+  display: none;
 }
 
 .kc-form {
@@ -459,20 +463,6 @@
 .kc-form button svg {
   width: 18px;
   height: 18px;
-}
-
-.kc-safety {
-  margin: 8px 2px 0;
-  font-size: 11.5px;
-  line-height: 1.4;
-  color: var(--kc-muted);
-  text-align: center;
-}
-
-.kc-safety a {
-  color: var(--kc-primary);
-  font-weight: 700;
-  text-decoration: none;
 }
 
 @media (max-width: 480px) {
@@ -539,14 +529,13 @@
 
     <div class="kc-body" id="kc-body" aria-live="polite"></div>
 
-    <footer class="kc-footer">
+    <footer class="kc-footer" id="kc-footer" hidden>
       <form class="kc-form" id="kc-form" hidden novalidate>
         <input id="kc-input" type="text" autocomplete="off" aria-label="Your reply">
         <button type="submit" aria-label="Send">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="kc-safety">In crisis or feeling unsafe? Call Tele-MANAS <a href="tel:14416">14416</a> (free, 24&times;7).</p>
     </footer>
   </section>
 </div>
@@ -573,6 +562,7 @@
   const win = document.getElementById('kc-window');
   const body = document.getElementById('kc-body');
   const form = document.getElementById('kc-form');
+  const footer = document.getElementById('kc-footer');
   const input = document.getElementById('kc-input');
   const teaser = document.getElementById('kc-teaser');
 
@@ -616,12 +606,14 @@
     input.autocomplete = type === 'email' ? 'email' : 'given-name';
     input.classList.remove('kc-invalid');
     form.hidden = false;
+    footer.hidden = false;
     onSubmit = handler;
     setTimeout(() => input.focus(), 50);
   }
 
   function hideInput() {
     form.hidden = true;
+    footer.hidden = true;
     onSubmit = null;
   }
 
