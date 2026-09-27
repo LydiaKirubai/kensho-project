@@ -61,6 +61,26 @@ if ($conn) {
 
 $columns = array_keys($columns);
 
+$perPage = 10;
+$totalRows = count($rows);
+$totalPages = max(1, (int)ceil($totalRows / $perPage));
+$page = min(max(1, (int)($_GET['page'] ?? 1)), $totalPages);
+$offset = ($page - 1) * $perPage;
+$pageRows = array_slice($rows, $offset, $perPage);
+
+function page_links(int $page, int $totalPages): array
+{
+    $links = [1, $totalPages];
+    for ($i = $page - 2; $i <= $page + 2; $i++) {
+        if ($i > 1 && $i < $totalPages) {
+            $links[] = $i;
+        }
+    }
+    $links = array_unique($links);
+    sort($links);
+    return $links;
+}
+
 function column_label(string $col): string
 {
     return ucwords(str_replace('_', ' ', $col));
@@ -231,6 +251,63 @@ function column_label(string $col): string
             color: #0b6394;
         }
 
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .page-info {
+            color: #666;
+        }
+
+        .pages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .pages a,
+        .pages span {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: var(--primary);
+            background: #fff;
+        }
+
+        .pages a:hover {
+            background: #eef4ff;
+            border-color: var(--secondary);
+        }
+
+        .pages .current {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .pages .disabled {
+            color: #ccc;
+        }
+
+        .pages .gap {
+            border: none;
+            min-width: auto;
+            padding: 0 4px;
+        }
+
         @media (max-width: 768px) {
             .dashboard {
                 margin: 15px;
@@ -288,7 +365,7 @@ function column_label(string $col): string
         <div class="notice">Could not connect to the database. Check the settings in <code>.env</code>.</div>
     <?php else: ?>
         <div class="summary">
-            <span><strong><?= count($rows) ?></strong> total</span>
+            <span><strong><?= $totalRows ?></strong> total</span>
             <?php foreach ($counts as $label => $count): ?>
                 <span><?= htmlspecialchars($label) ?>: <strong><?= $count ?></strong></span>
             <?php endforeach; ?>
@@ -313,7 +390,7 @@ function column_label(string $col): string
                     <?php if (!$rows): ?>
                         <tr><td colspan="<?= count($columns) + 2 ?>">No submissions yet.</td></tr>
                     <?php endif; ?>
-                    <?php foreach ($rows as $r): ?>
+                    <?php foreach ($pageRows as $r): ?>
                         <tr>
                             <td data-label="Form">
                                 <span class="badge <?= $badgeClass[$r['source']] ?? '' ?>"><?= htmlspecialchars($r['source']) ?></span>
@@ -335,6 +412,42 @@ function column_label(string $col): string
                 </tbody>
             </table>
         </div>
+
+        <?php if ($totalRows > 0): ?>
+            <div class="pagination">
+                <span class="page-info">
+                    Showing <?= $offset + 1 ?>&ndash;<?= $offset + count($pageRows) ?> of <?= $totalRows ?>
+                </span>
+                <?php if ($totalPages > 1): ?>
+                    <nav class="pages" aria-label="Pagination">
+                        <?php if ($page > 1): ?>
+                            <a href="?page=<?= $page - 1 ?>" aria-label="Previous page"><i class="fas fa-chevron-left"></i></a>
+                        <?php else: ?>
+                            <span class="disabled"><i class="fas fa-chevron-left"></i></span>
+                        <?php endif; ?>
+
+                        <?php $prev = 0; ?>
+                        <?php foreach (page_links($page, $totalPages) as $p): ?>
+                            <?php if ($p - $prev > 1): ?>
+                                <span class="gap">&hellip;</span>
+                            <?php endif; ?>
+                            <?php if ($p === $page): ?>
+                                <span class="current" aria-current="page"><?= $p ?></span>
+                            <?php else: ?>
+                                <a href="?page=<?= $p ?>"><?= $p ?></a>
+                            <?php endif; ?>
+                            <?php $prev = $p; ?>
+                        <?php endforeach; ?>
+
+                        <?php if ($page < $totalPages): ?>
+                            <a href="?page=<?= $page + 1 ?>" aria-label="Next page"><i class="fas fa-chevron-right"></i></a>
+                        <?php else: ?>
+                            <span class="disabled"><i class="fas fa-chevron-right"></i></span>
+                        <?php endif; ?>
+                    </nav>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 
