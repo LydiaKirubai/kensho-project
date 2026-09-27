@@ -1,31 +1,53 @@
 <?php
-session_start();
-require_once __DIR__ . '/includes/env.php';
-loadEnv(__DIR__ . '/.env');
-require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/auth.php';
 
-$error = "";
+if (admin_user() !== null) {
+    header('Location: dashboard.php');
+    exit();
+}
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
     $conn = db_connect();
-    if (!$conn) {
-        $error = "Sign-in is temporarily unavailable. Please try again later.";
+
+    if (!csrf_valid($_POST['csrf'] ?? null)) {
+        $error = 'Your session expired. Please try again.';
+    } elseif (!$conn) {
+        $error = 'Sign-in is temporarily unavailable. Please try again later.';
+    } elseif ($username === '' || $password === '') {
+        $error = 'Please enter your username and password.';
     } else {
-        $username = trim($_POST["username"]);
-        $password = trim($_POST["password"]);
-
-        $stmt = $conn->prepare("SELECT * FROM users WHERE username=? AND password=MD5(?)");
-        $stmt->bind_param("ss", $username, $password);
-        $stmt->execute();
-        $res = $stmt->get_result();
-
-        if ($res->num_rows === 1) {
-            $_SESSION['username'] = $username;
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $error = "Invalid username or password.";
+        $row = null;
+        $stmt = $conn->prepare('SELECT id, username, password_hash FROM admin_users WHERE username = ? LIMIT 1');
+        if ($stmt) {
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
         }
+
+        if ($row && password_verify($password, $row['password_hash'])) {
+            session_regenerate_id(true);
+            $_SESSION['admin_user'] = $row['username'];
+            unset($_SESSION['csrf']);
+
+            $update = $conn->prepare('UPDATE admin_users SET last_login_at = NOW() WHERE id = ?');
+            if ($update) {
+                $update->bind_param('i', $row['id']);
+                $update->execute();
+                $update->close();
+            }
+
+            header('Location: dashboard.php');
+            exit();
+        }
+
+        // Slows down password guessing.
+        sleep(1);
+        $error = 'Invalid username or password.';
     }
 }
 ?>
@@ -33,19 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Kensho Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Login - Kensho Project</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/my-favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/my-favicon/favicon.svg" />
     <link rel="shortcut icon" href="/my-favicon/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/my-favicon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Kensho Project" />
-    <link rel="manifest" href="/my-favicon/site.webmanifest" />
-
     <style>
         :root {
             --primary: #1B3592;
@@ -59,13 +75,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         body {
             margin: 0;
-            padding: 0;
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(to right, #e0f0ff, #f9fff0);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px;
         }
 
         .login-wrapper {
@@ -89,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 22px;
         }
 
-        .earthy-message {
+        .subtitle {
             color: var(--accent);
             font-size: 15px;
             margin-bottom: 20px;
@@ -106,8 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 15px;
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus {
+        input:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 2px #0f7ec324;
         }
@@ -130,71 +145,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .error {
-            color: red;
+            color: #c0392b;
             margin-bottom: 15px;
             font-size: 14px;
-        }
-
-        .earth-icons {
-            margin-top: 20px;
-            color: var(--accent);
-        }
-
-        .earth-icons i {
-            margin: 0 8px;
-            font-size: 20px;
-        }
-
-        /* Responsive Tweak */
-        @media (max-width: 480px) {
-            .login-wrapper {
-                padding: 30px 20px;
-            }
-
-            .logo {
-                max-width: 80px;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            input,
-            button {
-                font-size: 14px;
-            }
-
-            .earth-icons i {
-                font-size: 18px;
-            }
         }
     </style>
 </head>
 <body>
 
 <div class="login-wrapper">
-    <!-- Logo -->
-    <img src="assets/img/logo.png" alt="Logo" class="logo">
-
-    <h2>Welcome Back</h2>
-    <p class="earthy-message"><i class="fas fa-seedling"></i> Admin Login Page.</p>
+    <img src="/assets/img/logo.png" alt="Kensho Project" class="logo">
+    <h2>Admin Login</h2>
+    <p class="subtitle"><i class="fas fa-seedling"></i> Sign in to view form submissions.</p>
 
     <?php if ($error): ?>
-        <div class="error"><?php echo $error; ?></div>
+        <div class="error"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
     <form method="POST" action="">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrf_token()) ?>">
+        <input type="text" name="username" placeholder="Username" autocomplete="username" required>
+        <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
         <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
     </form>
-
-    <div class="earth-icons">
-        <i class="fas fa-tree" title="Nature aligned"></i>
-        <i class="fas fa-mountain" title="Inner strength"></i>
-        <i class="fas fa-water" title="Flow and calm"></i>
-        <i class="fas fa-leaf" title="Growth and healing"></i>
-    </div>
 </div>
 
 </body>
