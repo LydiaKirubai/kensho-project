@@ -189,7 +189,7 @@ require_once __DIR__ . '/includes/home_forms.php';
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Program 1 -->
-                <div onclick="window.open('https://kensho-project.setmore.com/#our-team', '_blank')" class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale cursor-pointer">
+                <div onclick="window.open('https://kensho-project.setmore.com/cauviya-madhiyazhagan', '_blank')" class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale cursor-pointer">
                     <img src="assets/img/1:1.png" alt="One-on-One Therapy" class="w-full h-56 object-contain" />
                     <div class="p-6">
                         <div class="flex items-center mb-4">
@@ -207,7 +207,7 @@ require_once __DIR__ . '/includes/home_forms.php';
                 </div>
                 
                 <!-- Program 2 -->
-                <div onclick="window.open('https://kensho-project.setmore.com/#our-team', '_blank')" class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale cursor-pointer">
+                <div onclick="window.open('https://kensho-project.setmore.com/cauviya-madhiyazhagan', '_blank')" class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale cursor-pointer">
                     <img src="assets/img/art-therapy.png" alt="Art Therapy" class="w-full h-56 object-contain" />
                     <div class="p-6">
                         <div class="flex items-center mb-4">
@@ -225,7 +225,7 @@ require_once __DIR__ . '/includes/home_forms.php';
                 </div>
                 
                 <!-- Program 3 -->
-                <div onclick="window.open('https://kensho-project.setmore.com/#our-team', '_blank')" class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale cursor-pointer">
+                <div onclick="window.open('https://kensho-project.setmore.com/cauviya-madhiyazhagan', '_blank')" class="bg-white rounded-lg overflow-hidden shadow-lg hover-scale cursor-pointer">
                     <img src="/assets/img/couple-therapy.png" alt="Couples Counseling" class="w-full h-56 object-contain" onerror="this.onerror=null;this.src='/assets/img/couple-therapy-2.png'" />
                     <div class="p-6">
                         <div class="flex items-center mb-4">
@@ -257,7 +257,7 @@ require_once __DIR__ . '/includes/home_forms.php';
 <section id="team" class="py-20 px-4 bg-gray-50">
   <div class="container mx-auto">
     <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">Meet Our Therapists</h2>
+      <h2 class="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">Meet Your Therapist</h2>
       <div class="w-24 h-1 bg-secondary mx-auto"></div>
     </div>
 
@@ -283,7 +283,7 @@ require_once __DIR__ . '/includes/home_forms.php';
               <a href="https://www.linkedin.com/in/cauviya-madhiyazhagan-83997b145?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" class="text-primary hover:text-secondary"><i class="fab fa-linkedin-in"></i></a>
               <a href="mailto:cauviya@kenshoproject.com" class="text-primary hover:text-secondary"><i class="fas fa-envelope"></i></a>
             </div>
-            <a href="https://kensho-project.setmore.com/cauviya" target="_blank" rel="noopener noreferrer" class="bg-secondary hover:bg-primary text-white font-semibold py-2 px-4 rounded-full transition duration-300">Book Now</a>
+            <a href="https://kensho-project.setmore.com/cauviya-madhiyazhagan" target="_blank" rel="noopener noreferrer" class="bg-secondary hover:bg-primary text-white font-semibold py-2 px-4 rounded-full transition duration-300">Book Now</a>
           </div>
         </div>
       </div>
@@ -307,7 +307,7 @@ require_once __DIR__ . '/includes/home_forms.php';
             <p>Feel free to reach out if you're ready to take a gentle, yet powerful step forward.</p>
           </div>
           <div class="flex justify-center mt-6">
-            <a href="https://kensho-project.setmore.com/cauviya" target="_blank" rel="noopener noreferrer" class="inline-block bg-secondary hover:bg-primary text-white font-semibold py-3 px-6 rounded-full transition duration-300">Book Now</a>
+            <a href="https://kensho-project.setmore.com/cauviya-madhiyazhagan" target="_blank" rel="noopener noreferrer" class="inline-block bg-secondary hover:bg-primary text-white font-semibold py-3 px-6 rounded-full transition duration-300">Book Now</a>
           </div>
         </div>
       </div>
