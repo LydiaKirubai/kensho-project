@@ -101,14 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         h2 {
             color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 22px;
-        }
-
-        .subtitle {
-            color: var(--accent);
-            font-size: 15px;
             margin-bottom: 20px;
+            font-size: 22px;
         }
 
         input[type="text"],
@@ -156,8 +150,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="login-wrapper">
     <img src="/assets/img/logo.png" alt="Kensho Project" class="logo">
     <h2>Admin Login</h2>
-    <p class="subtitle"><i class="fas fa-seedling"></i> Sign in to view form submissions.</p>
-
     <?php if ($error): ?>
         <div class="error"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
