@@ -28,11 +28,20 @@ function db_connect(): ?mysqli
         return null;
     }
 
-    $mysqli = @new mysqli($host, $user, $pass, $name);
+    // PHP 8.1+ throws on mysqli errors by default; callers expect false/null returns instead.
+    mysqli_report(MYSQLI_REPORT_OFF);
+
+    try {
+        $mysqli = @new mysqli($host, $user, $pass, $name);
+    } catch (Throwable $e) {
+        error_log('db_connect: ' . $e->getMessage());
+        return null;
+    }
     if ($mysqli->connect_error) {
         error_log('db_connect: ' . $mysqli->connect_error);
         return null;
     }
+    $mysqli->set_charset('utf8mb4');
 
     $cached = $mysqli;
     return $cached;
